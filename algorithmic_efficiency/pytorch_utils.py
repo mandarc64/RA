@@ -8,7 +8,7 @@ import torch
 import torch.distributed as dist
 
 from algorithmic_efficiency import spec
-from algorithmic_efficiency.profiler import Profiler
+from algorithmic_efficiency.profiler import JAXProfiler
 from algorithmic_efficiency.workloads.librispeech_conformer.librispeech_pytorch.models import \
     BatchNorm as ConformerBatchNorm
 from algorithmic_efficiency.workloads.librispeech_deepspeech.librispeech_pytorch.models import \
@@ -23,7 +23,7 @@ def pytorch_setup() -> Tuple[bool, int, torch.device, int]:
   return use_pytorch_ddp, rank, device, n_gpus
 
 
-def pytorch_init(use_pytorch_ddp: bool, rank: int, profiler: Profiler) -> None:
+def pytorch_init(use_pytorch_ddp: bool, rank: int, profiler: JAXProfiler) -> None:
   # Make sure no GPU memory is preallocated to Jax.
   os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'] = 'false'
   # Only use CPU for Jax to avoid memory issues.
